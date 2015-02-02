@@ -611,7 +611,7 @@ class Electric(object):
         # Select power column:
         kwargs['physical_quantity'] = 'power'
         kwargs.setdefault('ac_type', 'best')
-        return self.load_series(**kwargs) #load_series
+        return self.load_series(**kwargs)
 
     def activity_histogram(self, period='D', bin_duration='H', **kwargs):
         """Return a histogram vector showing when activity occurs.
