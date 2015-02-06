@@ -316,22 +316,7 @@ class FHMM(object):
         """
 
     def disaggregate(self, mains, output_datastore, **load_kwargs):
-        '''Disaggregate mains according to the model learnt previously.
-
-        Parameters
-        ----------
-        mains : nilmtk.ElecMeter or nilmtk.MeterGroup
-        output_datastore : instance of nilmtk.DataStore subclass
-            For storing power predictions from disaggregation algorithm.
-        output_name : string, optional
-            The `name` to use in the metadata for the `output_datastore`.
-            e.g. some sort of name for this experiment.  Defaults to 
-            "NILMTK_FHMM_<date>"
-        resample_seconds : number, optional
-            The desired sample period in seconds.
-        **load_kwargs : key word arguments
-            Passed to `mains.power_series(**kwargs)`
-        '''
+       
         import warnings
         warnings.filterwarnings("ignore", category=Warning)
         MIN_CHUNK_LENGTH =100
@@ -387,14 +372,6 @@ class FHMM(object):
             # Copy mains data to disag output
             output_datastore.append(key=mains_data_location,
                                     value=pd.DataFrame(chunk, columns=cols))
-
-        ##################################
-        # Add metadata to output_datastore
-
-        # TODO: `preprocessing_applied` for all meters
-        # TODO: split this metadata code into a separate function
-        # TODO: submeter measurement should probably be the mains
-        #       measurement we used to train on, not the mains measurement.
 
         # DataSet and MeterDevice metadata:
         meter_devices = {
@@ -455,9 +432,6 @@ class FHMM(object):
                     'meters': [meter_instance], 
                     'type': app.identifier.type,
                     'instance': app.identifier.instance
-                    # TODO this `instance` will only be correct when the
-                    # model is trained on the same house as it is tested on.
-                    # https://github.com/nilmtk/nilmtk/issues/194
                 }
                 appliances.append(appliance)
 
